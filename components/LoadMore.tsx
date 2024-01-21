@@ -1,10 +1,10 @@
 "use client";
 
-import { fetchAnime } from "@/app/action";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import AnimeCard, { AnimeProp } from "./AnimeCard";
+import { useEffect, useState } from "react";
+
+import { fetchAnime } from "../app/action";
 
 let page = 2;
 
@@ -12,13 +12,16 @@ export type AnimeCard = JSX.Element;
 
 function LoadMore() {
   const { ref, inView } = useInView();
-  const [data, setData] = useState<AnimeProp[]>([]);
+
+  const [data, setData] = useState<AnimeCard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (inView) {
       setIsLoading(true);
+
       const delay = 500;
+
       const timeoutId = setTimeout(() => {
         fetchAnime(page).then((res) => {
           setData([...data, ...res]);
@@ -46,7 +49,6 @@ function LoadMore() {
               width={56}
               height={56}
               className="object-contain"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           )}
         </div>
